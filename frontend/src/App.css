@@ -1,0 +1,30 @@
+.app-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+.topic-creator {
+  margin-bottom: 20px;
+}
+.content {
+  display: flex;
+}
+.topic-list {
+  list-style: none;
+  padding: 0;
+  width: 200px;
+  border-right: 1px solid #ccc;
+}
+.topic-list li {
+  padding: 5px;
+  cursor: pointer;
+}
+.topic-list li.active {
+  background: #f0f0f0;
+}
+.details {
+  padding: 0 20px;
+  flex: 1;
+}
+.field-creator input {
+  margin-right: 5px;
+}
