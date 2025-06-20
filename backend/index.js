@@ -45,5 +45,30 @@ app.post('/api/topics/:id/fields', (req, res) => {
   res.json(topic);
 });
 
+// Удаление топика
+app.delete('/api/topics/:id', (req, res) => {
+  const { id } = req.params;
+  const index = data.topics.findIndex(t => t.id === id);
+  if (index === -1) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  data.topics.splice(index, 1);
+  saveData();
+  res.status(204).end();
+});
+
+// Удаление поля из топика
+app.delete('/api/topics/:id/fields/:key', (req, res) => {
+  const { id, key } = req.params;
+  const topic = data.topics.find(t => t.id === id);
+  if (!topic || !(key in topic.fields)) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+  delete topic.fields[key];
+  saveData();
+  res.status(204).end();
+});
+
+
 const PORT = 4000;
 app.listen(PORT, () => console.log(`Server listening on http://localhost:${PORT}`));

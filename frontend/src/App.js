@@ -43,6 +43,25 @@ function App() {
     }
   };
 
+  // Удалить топик
+    const deleteTopic = async (id) => {
+    const res = await fetch(`/api/topics/${id}`, { method: 'DELETE' });
+    if (res.ok) {
+        setTopics(prev => prev.filter(t => t.id !== id));
+        if (selected?.id === id) setSelected(null);
+    }
+    };
+
+    // Удалить поле
+    const deleteField = async (topicId, key) => {
+    const res = await fetch(`/api/topics/${topicId}/fields/${key}`, { method: 'DELETE' });
+    if (res.ok && selected && selected.id === topicId) {
+        const updatedFields = { ...selected.fields };
+        delete updatedFields[key];
+        setSelected({ ...selected, fields: updatedFields });
+    }
+    };
+
   return (
     <div className="app-container">
       <h1>Менеджер аккаунтов</h1>
@@ -56,15 +75,22 @@ function App() {
       </div>
       <div className="content">
         <ul className="topic-list">
-          {topics.map(t => (
-            <li
-              key={t.id}
-              onClick={() => setSelected(t)}
-              className={selected?.id === t.id ? 'active' : ''}
+        {topics.map(t => (
+            <li key={t.id} style={{ display: 'flex', alignItems: 'center' }}>
+            <span
+                onClick={() => setSelected(t)}
+                style={{ flexGrow: 1, cursor: 'pointer' }}
             >
-              {t.name}
+                {t.name}
+            </span>
+            <button
+                onClick={() => deleteTopic(t.id)}
+                aria-label="Удалить топик"
+            >
+                ×
+            </button>
             </li>
-          ))}
+        ))}
         </ul>
         <div className="details">
           {selected ? (
